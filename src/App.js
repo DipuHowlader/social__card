@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+
+import { useState, useEffect } from "react";
+import "./App.css";
+import SocialCard from "./SocialCard";
+import SearchBar from './SearchBar'
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+  const [user, setUser] = useState([])
+  const [alluser, allsetUser] = useState([])
+
+  useEffect(() =>{
+
+    let peapol;
+    (async () =>{
+      try {
+        const response = await fetch ('https://randomuser.me/api/?results=12')
+        const data = await response.json()
+        peapol = data
+
+      } catch (error) {
+        console.log(error);
+        peapol = []
+      }
+      setUser(peapol.results)
+      allsetUser(peapol.results)
+
+    })();
+  },[])
+
+  return(
+    <div className="app">
+
+      <SearchBar alluser = {alluser} setUser ={setUser} />
+      <SocialCard  userData = {user} key={1} />
+
     </div>
-  );
+  )
 }
+
 
 export default App;
